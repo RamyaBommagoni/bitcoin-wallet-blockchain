@@ -49,22 +49,23 @@ bitcoin-wallet-blockchain/
 
 ## 🚀 How to Run the Application
 
-1. Clone the Repository:
+### 1. Install dependencies
 
-   git clone https://github.com/your-username/bitcoin-wallet-blockchain.git  
-   cd bitcoin-wallet-blockchain
+```bash
+pip install -r requirements.txt
+```
 
-2. Install Dependencies:
+### 2. Run the Flask app
 
-   pip install flask ecdsa
+```bash
+python app.py
+```
 
-3. Run the Flask App:
+### 3. Open in browser
 
-   python app.py
-
-4. Open in Your Browser:
-
-   http://127.0.0.1:5000/
+```bash
+http://127.0.0.1:5000/
+```
 
 ## 🖼️ Project Preview
 
