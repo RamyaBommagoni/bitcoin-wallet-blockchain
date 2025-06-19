@@ -31,14 +31,19 @@ To simulate a Bitcoin-style blockchain system that:
 
 ## 📁 Project Structure
 
-bitcoin-wallet-blockchain/  
-│  
+bitcoin-wallet-blockchain/
+│
 ├── app.py                 # Flask app and blockchain logic  
 ├── requirements.txt       # Python dependencies  
-├── templates/  
+├── templates/
 │   ├── login.html         # Login page  
 │   └── index.html         # Dashboard and blockchain UI  
+├── screenshots/           # ✅ Add this folder for README image previews  
+│   ├── login.png
+│   ├── blockchain.png
+│   └── history.png
 └── README.md              # Project documentation  
+
 
 ## 🛠️ Tech Stack
 
