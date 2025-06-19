@@ -31,6 +31,7 @@ To simulate a Bitcoin-style blockchain system that:
 
 ## 📁 Project Structure
 
+```
 bitcoin-wallet-blockchain/
 │
 ├── app.py                 # Flask app and blockchain logic  
@@ -38,19 +39,16 @@ bitcoin-wallet-blockchain/
 ├── templates/
 │   ├── login.html         # Login page  
 │   └── index.html         # Dashboard and blockchain UI  
-├── screenshots/           # ✅ Add this folder for README image previews  
-│   ├── login.png
-│   ├── blockchain.png
-│   └── history.png
+├── screenshots/           # 📸 Screenshots for README preview  
 └── README.md              # Project documentation  
-
+```
 
 ## 🛠️ Tech Stack
 
-- Frontend: HTML, Bootstrap 5, Jinja2  
-- Backend: Python 3, Flask  
-- Cryptography: ECDSA, SHA-256  
-- Data Structures: Linked List, Hashing, OOP Classes
+- **Frontend**: HTML, Bootstrap 5, Jinja2  
+- **Backend**: Python 3, Flask  
+- **Crypto**: ECDSA, SHA-256  
+- **DS Concepts**: Linked List, Hashing, Object-Oriented Design
 
 ## 🚀 How to Run the Application
 
@@ -74,15 +72,6 @@ http://127.0.0.1:5000/
 
 ## 🖼️ Project Preview
 
-You can add screenshots of your UI here to showcase:
-
-- 🔐 Login Page  
-- 💼 Wallet Dashboard with Balances  
-- 📤 Send Transaction Form  
-- ⛏️ Mine Block Button and Blockchain Explorer  
-- 📜 Transaction History Section
-
-*(Example placeholder)*  
 ![Login UI](screenshots/login.png)  
 ![Blockchain Page](screenshots/blockchain.png)  
 ![Transaction History](screenshots/history.png)
@@ -97,12 +86,12 @@ You can add screenshots of your UI here to showcase:
 
 ## ✅ Concepts Used
 
-- Linked List → Blockchain chaining via `previous_hash`  
-- Hashing → SHA-256 for block validation and immutability  
-- OOP → Custom Wallet, Block, and Blockchain classes  
-- Digital Signature → ECDSA for transaction verification  
-- Flask Routing → Login, send, mine, logout  
-- Session Handling → Tracks active user sessions
+- **Linked List** → Blockchain chaining via `previous_hash`  
+- **Hashing** → SHA-256 for block validation and immutability  
+- **OOP** → Custom Wallet, Block, and Blockchain classes  
+- **Digital Signature** → ECDSA for transaction verification  
+- **Flask Routing** → Login, send, mine, logout  
+- **Session Handling** → Tracks active user sessions
 
 ## 🎉 Thank You
 
