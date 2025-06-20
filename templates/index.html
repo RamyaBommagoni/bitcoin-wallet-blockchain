@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bitcoin Wallet Dashboard</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Confetti CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
+  <style>
+    .hidden { display: none; }
+    .reward-animation {
+      animation: pop 0.5s ease-in-out;
+      font-weight: bold;
+      color: green;
+    }
+    @keyframes pop {
+      0% { transform: scale(0.9); opacity: 0; }
+      50% { transform: scale(1.1); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+  </style>
+
+  <script>
+    function toggleSection(id) {
+      document.getElementById('send-section').classList.add('hidden');
+      document.getElementById('tx-history').classList.add('hidden');
+      document.getElementById('blockchain-history').classList.add('hidden');
+      document.getElementById('mine-block').classList.add('hidden');
+      document.getElementById(id).classList.remove('hidden');
+    }
+
+    function triggerConfettiIfMined() {
+      const alertBox = document.querySelector('.alert-success');
+      if (alertBox && alertBox.innerText.includes("mined successfully")) {
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 }
+        });
+      }
+    }
+
+    window.onload = function() {
+      triggerConfettiIfMined();
+
+      // Auto-fill for mining fields
+      const t = document.getElementById("mine-timestamp");
+      const d = document.getElementById("mine-data");
+      const p = document.getElementById("mine-prev");
+      if (t && d && p) {
+        t.value = new Date().toISOString();
+        d.value = JSON.stringify({{ transactions | tojson | safe }}, null, 2);
+        p.value = "{{ blockchain[-1].hash if blockchain else '0' }}";
+      }
+    };
+  </script>
+</head>
+
+<body class="bg-light">
+  <div class="container py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h3>👋 Welcome, {{ user.name }}</h3>
+      <a href="/logout" class="btn btn-danger">Logout</a>
+    </div>
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <div class="alert alert-success reward-animation">
+        {% for msg in messages %}{{ msg }}<br>{% endfor %}
+      </div>
+    {% endif %}
+    {% endwith %}
+
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5>💼 Wallet Info</h5>
+        <p><strong>Name:</strong> {{ user.name }}</p>
+        <p><strong>Account:</strong> {{ user.account }}</p>
+        <p><strong>Balance:</strong> {{ user.balance }} BTC</p>
+      </div>
+    </div>
+
+    <div class="btn-group mb-4">
+      <button class="btn btn-primary" onclick="toggleSection('send-section')">Send</button>
+      <button class="btn btn-secondary" onclick="toggleSection('tx-history')">Transaction History</button>
+      <button class="btn btn-dark" onclick="toggleSection('blockchain-history')">Blockchain</button>
+      <button class="btn btn-warning" onclick="toggleSection('mine-block')">Mine Block</button>
+    </div>
+
+    <!-- 🔁 Send Section -->
+    <div id="send-section">
+      <div class="card mb-3">
+        <div class="card-header">📤 Send BTC</div>
+        <div class="card-body">
+          <form action="/send" method="POST">
+            <div class="mb-3">
+              <label for="recipient" class="form-label">Recipient</label>
+              <select class="form-select" name="recipient" required>
+                {% for name, wallet in wallets.items() if wallet.name != user.name %}
+                  <option value="{{ wallet.name }}">{{ wallet.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="amount" class="form-label">Amount</label>
+              <input type="number" class="form-control" name="amount" required />
+            </div>
+            <button type="submit" class="btn btn-success w-100">Send</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- 📜 Transaction History -->
+    <div id="tx-history" class="hidden">
+      <h5>🧾 Pending Transactions</h5>
+      {% if transactions %}
+        <ul class="list-group">
+          {% for txn in transactions %}
+            <li class="list-group-item">
+              {{ txn.sender }} → {{ txn.recipient }} : {{ txn.amount }} BTC
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <div class="alert alert-info mt-3">No transactions in queue.</div>
+      {% endif %}
+    </div>
+
+    <!-- 📚 Blockchain History -->
+    <div id="blockchain-history" class="hidden">
+      <h5 class="mt-4">📦 Blockchain</h5>
+      {% for block in blockchain %}
+      <div class="card mb-3">
+        <div class="card-body">
+          <h6>Block #{{ block.index }}</h6>
+          <p><strong>Timestamp:</strong> {{ block.timestamp }}</p>
+          <p><strong>Hash:</strong> {{ block.hash }}</p>
+          <p><strong>Prev Hash:</strong> {{ block.previous_hash }}</p>
+          <p><strong>Transactions:</strong></p>
+          <pre>{{ block.transactions | tojson(indent=2) }}</pre>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- ⛏️ Mine Block -->
+    <div id="mine-block" class="hidden">
+      {% if transactions %}
+        <div class="alert alert-warning">There are transactions waiting. Please mine now.</div>
+      {% else %}
+        <div class="alert alert-info">No transactions, but you can mine to receive reward.</div>
+      {% endif %}
+
+      <form action="/mine" method="post">
+        <div class="mb-3">
+          <label class="form-label">Timestamp</label>
+          <input type="text" class="form-control" name="timestamp" id="mine-timestamp" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Block Data</label>
+          <textarea class="form-control" name="data" id="mine-data" rows="5" required></textarea>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Previous Hash</label>
+          <input type="text" class="form-control" name="prev_hash" id="mine-prev" required>
+        </div>
+        <button type="submit" class="btn btn-warning w-100">⛏️ Mine and Add Block</button>
+      </form>
+    </div>
+
+  </div>
+</body>
+</html>
