@@ -72,9 +72,47 @@ http://127.0.0.1:5000/
 
 ## 🖼️ Project Preview
 
+### 🔐 Login Page
+
 ![Login UI](screenshots/login.png)  
+> A simple and clean login interface where users can securely sign in with predefined wallet credentials.
+
+---
+
+### 📤 Send Transaction
+
+![Send Transaction](screenshots/send-transaction.png)  
+> Easily send BTC to another user by selecting the recipient and amount. This form handles digital signature verification in the backend.
+
+---
+
+### 📊 Transaction History
+
+![Transaction History](screenshots/history.png)  
+> View all your past transactions neatly listed with sender, recipient, and amount transferred.
+
+---
+
+### 🔗 Blockchain Explorer
+
 ![Blockchain Page](screenshots/blockchain.png)  
-![Transaction History](screenshots/history.png)
+> A live blockchain explorer displaying all blocks with their hashes, previous hashes, timestamps, and included transactions.
+
+---
+
+### ⛏️ Mine Block
+
+![Mine Block](screenshots/mine.png)  
+> If pending transactions exist, miners can fill this form with auto-filled values to validate the block. A reward of 2 BTC is given after successful validation.
+
+---
+
+### 🎉 Reward Animation (Post Mining)
+
+> 🎊 After a valid block is mined, a confetti animation and a congratulatory message appear to celebrate the reward. This reinforces the gamified experience of mining.
+
+---
+
 
 ## 📸 Example Use Case
 
